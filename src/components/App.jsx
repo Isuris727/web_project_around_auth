@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
+import InfoTooltip from "./Main/Popup/InfoTooltip/InfoTooltip.jsx";
 import api from "../utils/api.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
@@ -104,7 +105,7 @@ function App() {
           onCardDelete={handleCardDelete}
           onAddCard={handleAddCard}
         />
-
+        <InfoTooltip />
         <Footer />
       </div>
     </CurrentUserContext.Provider>
