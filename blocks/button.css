@@ -39,6 +39,12 @@
   border: none;
 }
 
+.button_type_navbar {
+  color: #fff;
+  border: none;
+  width: fit-content;
+}
+
 .button_type_submit {
   background-color: rgba(0, 0, 0, 1);
   color: #fff;
@@ -47,6 +53,12 @@
   min-height: 40.15px;
   height: 100%;
   max-height: 50.15px;
+}
+
+.button_type_auth {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  margin: 37% auto 0;
 }
 
 .button_type_submit:hover {
@@ -79,7 +91,7 @@
   grid-column: 2/3;
   justify-self: end;
   margin-right: 18px;
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
 }
 
 .button_type_like_inactive {

@@ -14,10 +14,21 @@
   padding: 34px 36px;
 }
 
+.form_type_auth {
+  background-color: rgba(0, 0, 0, 1);
+  margin: 60px auto 80px;
+}
+
 .form__title {
   align-self: flex-start;
   margin: 0 auto;
 }
+
+.form__text {
+  color: rgba(255, 255, 255, 1);
+  text-align: center;
+}
+
 .form__input {
   border: none;
   border-bottom: 1px solid rgba(196, 196, 196, 1);
@@ -49,6 +60,13 @@
 
 .form__input_type_about {
   margin-bottom: 7px;
+}
+
+.form__input_type_auth {
+  background-color: rgb(0, 0, 0);
+  color: rgba(204, 204, 204, 1);
+  max-width: 358px;
+  margin-bottom: 30px;
 }
 
 .form__button {

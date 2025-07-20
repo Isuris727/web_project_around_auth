@@ -5,27 +5,76 @@ import Footer from "./Footer/Footer.jsx";
 import InfoTooltip from "./Main/Popup/InfoTooltip/InfoTooltip.jsx";
 import api from "../utils/api.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
+import { AuthContext } from "../contexts/AuthContext.js";
+import Authentication from "./Authentication/Authentication.jsx";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
 
-  // --------- USER -------
+  // --------- contextProviders -------
+  function AuthProvider({ children }) {
+    return (
+      <AuthContext.Provider value={{ isLoggedIn }}>
+        {children}
+      </AuthContext.Provider>
+    );
+  }
+
+  function CurrentUserProvider({ children }) {
+    return (
+      <CurrentUserContext.Provider
+        value={{
+          currentUser,
+          handleUpdateUser,
+          handleUpdateAvatar,
+        }}
+      >
+        {children}
+      </CurrentUserContext.Provider>
+    );
+  }
+
+  console.log(currentUser, "linea 41");
+  // --------- LOG IN -------
   useEffect(() => {
+    const token = ""; // funcion para obtener token
+    if (!token) {
+      return;
+    }
     async function obtainUser() {
       try {
         const user = await api.getUserInfo();
 
         setCurrentUser(user);
+        // setIsLoggedIn(true);
       } catch (error) {
         console.log(error);
       }
     }
     obtainUser();
   }, []);
+
+  console.log(currentUser, "linea 61");
+
+  // // --------- USER -------
+  // useEffect(() => {
+  //   async function obtainUser() {
+  //     try {
+  //       const user = await api.getUserInfo();
+
+  //       setCurrentUser(user);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   obtainUser();
+  // }, []);
+
+  // console.log(currentUser);
 
   const handleUpdateUser = async (data) => {
     const updatedUser = await api.updateUserInfo(data);
@@ -86,29 +135,24 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider
-      value={{
-        currentUser,
-        handleUpdateUser,
-        handleUpdateAvatar,
-      }}
-    >
-      <div className="page">
-        <Header />
+    <AuthProvider>
+      <CurrentUserProvider>
+        <div className="page">
+          <Header />
 
-        <Main
-          onOpenPopup={handleOpenPopup}
-          onClosePopup={handleClosePopup}
-          popup={popup}
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          onAddCard={handleAddCard}
-        />
-        <InfoTooltip />
-        <Footer />
-      </div>
-    </CurrentUserContext.Provider>
+          <Main
+            onOpenPopup={handleOpenPopup}
+            onClosePopup={handleClosePopup}
+            popup={popup}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            onAddCard={handleAddCard}
+          />
+          <Footer />
+        </div>
+      </CurrentUserProvider>
+    </AuthProvider>
   );
 }
 
