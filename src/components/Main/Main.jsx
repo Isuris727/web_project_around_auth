@@ -5,7 +5,8 @@ import Card from "./Card/Card";
 import Popup from "./Popup/Popup";
 import api from "../../utils/api";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { useState, useEffect, useContext } from "react";
+// import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 
 function Main(props) {
   const {

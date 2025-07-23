@@ -1,16 +1,18 @@
-import { useState } from "react";
+// import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 function Authentication() {
-  const [authPoint, setAuthPoint] = useState("register");
+  // const [authPoint, setAuthPoint] = useState("register");
+  const authPoint = useLocation().pathname;
 
   function toggleAuth(authPoint) {
     const entryPoint = {};
-    if (authPoint === "register") {
+    if (authPoint === "/signup") {
       entryPoint.title = "Regístrate";
-      entryPoint.shift = "¿Ya eres miembro? Inicia sesión";
-    } else if (authPoint === "Login") {
+      entryPoint.shift = "¿Ya eres miembro? Inicia sesión ";
+    } else if (authPoint === "/signin") {
       entryPoint.title = "Inicia Sesión";
-      entryPoint.shift = "¿Aún no eres miembro? Regístrate";
+      entryPoint.shift = "¿Aún no eres miembro? Regístrate ";
     }
     return entryPoint;
   }
@@ -36,7 +38,8 @@ function Authentication() {
           {auth.title}
         </button>
         <p className="form__text">
-          {auth.shift} <a>aqui</a>
+          {auth.shift}
+          <button className="button button_type_navbar">aqui</button>
         </p>
       </form>
     </>

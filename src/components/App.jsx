@@ -1,16 +1,24 @@
 import { useState, useEffect } from "react";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
+import Authentication from "./Authentication/Authentication.jsx";
+import InfoTooltip from "./Main/Popup/InfoTooltip/InfoTooltip.jsx";
 import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
-import InfoTooltip from "./Main/Popup/InfoTooltip/InfoTooltip.jsx";
 import api from "../utils/api.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { AuthContext } from "../contexts/AuthContext.js";
-import Authentication from "./Authentication/Authentication.jsx";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
@@ -38,7 +46,6 @@ function App() {
     );
   }
 
-  console.log(currentUser, "linea 41");
   // --------- LOG IN -------
   useEffect(() => {
     const token = ""; // funcion para obtener token
@@ -57,8 +64,6 @@ function App() {
     }
     obtainUser();
   }, []);
-
-  console.log(currentUser, "linea 61");
 
   // // --------- USER -------
   // useEffect(() => {
@@ -99,6 +104,7 @@ function App() {
         console.log(error);
       }
     }
+    console.log("isliked->", isLiked);
     obtainCardsData();
   }, [isLiked]);
 
@@ -137,20 +143,51 @@ function App() {
   return (
     <AuthProvider>
       <CurrentUserProvider>
-        <div className="page">
-          <Header />
-
-          <Main
-            onOpenPopup={handleOpenPopup}
-            onClosePopup={handleClosePopup}
-            popup={popup}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            onAddCard={handleAddCard}
+        <Routes>
+          <Route
+            path="/signup"
+            element={
+              <ProtectedRoute anonymous>
+                <div className="page">
+                  <Header />
+                  <Authentication />
+                  <Footer />
+                </div>
+              </ProtectedRoute>
+            }
           />
-          <Footer />
-        </div>
+          <Route
+            path="/signin"
+            element={
+              <ProtectedRoute anonymous>
+                <div className="page">
+                  <Header />
+                  <Authentication />
+                  <Footer />
+                </div>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            element={
+              <ProtectedRoute>
+                <div className="page">
+                  <Header />
+                  <Main
+                    onOpenPopup={handleOpenPopup}
+                    onClosePopup={handleClosePopup}
+                    popup={popup}
+                    cards={cards}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}
+                    onAddCard={handleAddCard}
+                  />
+                  <Footer />
+                </div>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </CurrentUserProvider>
     </AuthProvider>
   );
