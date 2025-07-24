@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { CurrentUserContext } from "../../../contexts/CurrentUserContext";
 
@@ -7,30 +7,36 @@ function NavBar() {
   const location = useLocation().pathname;
 
   function shiftNavBarBtnText(location) {
-    let NavBarBtnText;
+    const NavBarBtn = {};
 
     if (location === "/signup") {
-      NavBarBtnText = "Iniciar sesión";
-      return NavBarBtnText;
+      NavBarBtn.text = "Iniciar sesión";
+      NavBarBtn.path = "/signin";
+      return NavBarBtn;
     } else if (location === "/signin") {
-      NavBarBtnText = "Registrate";
-      return NavBarBtnText;
+      NavBarBtn.text = "Registrate";
+      NavBarBtn.path = "/signup";
+      return NavBarBtn;
     }
   }
 
-  const buttonText = shiftNavBarBtnText(location);
+  const button = shiftNavBarBtnText(location);
 
   const { isLoggedIn } = useContext(AuthContext);
   const { currentUser } = useContext(CurrentUserContext);
   if (isLoggedIn) {
     return (
       <>
-        <div className="button_type_navbar"> {"currentUser.email"} </div>
+        <div className="button button_type_navbar"> {"currentUser.email"} </div>
         <button className="button  button_type_navbar">Cerrar Sesión</button>
       </>
     );
   } else {
-    return <button className="button  button_type_navbar">{buttonText}</button>;
+    return (
+      <Link to={button.path} className="button  button_type_navbar">
+        {button.text}
+      </Link>
+    );
   }
 }
 

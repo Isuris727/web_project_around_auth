@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 function Authentication() {
   // const [authPoint, setAuthPoint] = useState("register");
@@ -10,9 +10,11 @@ function Authentication() {
     if (authPoint === "/signup") {
       entryPoint.title = "Regístrate";
       entryPoint.shift = "¿Ya eres miembro? Inicia sesión ";
+      entryPoint.shiftedAuthPoint = "/signin";
     } else if (authPoint === "/signin") {
-      entryPoint.title = "Inicia Sesión";
+      entryPoint.title = "Inicia sesión";
       entryPoint.shift = "¿Aún no eres miembro? Regístrate ";
+      entryPoint.shiftedAuthPoint = "/signup";
     }
     return entryPoint;
   }
@@ -39,7 +41,12 @@ function Authentication() {
         </button>
         <p className="form__text">
           {auth.shift}
-          <button className="button button_type_navbar">aqui</button>
+          <Link
+            to={auth.shiftedAuthPoint}
+            className="button button_type_navbar"
+          >
+            aqui
+          </Link>
         </p>
       </form>
     </>

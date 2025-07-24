@@ -43,6 +43,7 @@
   color: #fff;
   border: none;
   width: fit-content;
+  text-decoration: none;
 }
 
 .button_type_submit {

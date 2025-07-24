@@ -169,6 +169,7 @@ function App() {
             }
           />
           <Route
+            path="/"
             element={
               <ProtectedRoute>
                 <div className="page">
