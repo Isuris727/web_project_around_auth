@@ -7,8 +7,8 @@ function ProtectedRoute({ children, anonymous = false }) {
   const from = location.state?.from || "/";
   const { isLoggedIn } = useContext(AuthContext);
 
-  console.log("isloggedIn protectedRoute->", isLoggedIn);
-  console.log("anonymous", anonymous && isLoggedIn);
+  // console.log("isloggedIn protectedRoute->", isLoggedIn);
+  // console.log("anonymous", anonymous && isLoggedIn);
   if (anonymous && isLoggedIn) {
     return <Navigate to={from} />;
   }

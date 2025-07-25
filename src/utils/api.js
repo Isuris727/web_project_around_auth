@@ -7,6 +7,8 @@ class Api {
     const response = await fetch(`${this.url}${endpoint}`, {
       method: requestMethod,
       headers: {
+        //agregar a tus solicitudes un encabezado Authorization: Bearer {token}, utilizando el token recibido por la solicitud de autenticación del usuario
+
         authorization: "94c8a629-44c5-4556-b294-d569e5d5ac14",
         "content-type": "application/json",
       },

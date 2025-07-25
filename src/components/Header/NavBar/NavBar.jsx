@@ -4,6 +4,9 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import { CurrentUserContext } from "../../../contexts/CurrentUserContext";
 
 function NavBar() {
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { currentUser } = useContext(CurrentUserContext);
+
   const location = useLocation().pathname;
 
   function shiftNavBarBtnText(location) {
@@ -22,13 +25,18 @@ function NavBar() {
 
   const button = shiftNavBarBtnText(location);
 
-  const { isLoggedIn } = useContext(AuthContext);
-  const { currentUser } = useContext(CurrentUserContext);
+  function handleLogOut() {
+    setIsLoggedIn(false);
+    localStorage.removeItem("token");
+  }
+
   if (isLoggedIn) {
     return (
       <>
-        <div className="button button_type_navbar"> {"currentUser.email"} </div>
-        <button className="button  button_type_navbar">Cerrar Sesión</button>
+        <div className="button button_type_navbar"> {currentUser.email} </div>
+        <button className="button  button_type_navbar" onClick={handleLogOut}>
+          Cerrar Sesión
+        </button>
       </>
     );
   } else {

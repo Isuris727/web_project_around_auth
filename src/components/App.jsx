@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute/ProtectedRoute.jsx";
 import Authentication from "./Authentication/Authentication.jsx";
-import InfoTooltip from "./Main/Popup/InfoTooltip/InfoTooltip.jsx";
 import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
@@ -26,7 +25,7 @@ function App() {
   // --------- contextProviders -------
   function AuthProvider({ children }) {
     return (
-      <AuthContext.Provider value={{ isLoggedIn }}>
+      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
         {children}
       </AuthContext.Provider>
     );
@@ -57,7 +56,7 @@ function App() {
         const user = await api.getUserInfo();
 
         setCurrentUser(user);
-        // setIsLoggedIn(true);
+        setIsLoggedIn(true);
       } catch (error) {
         console.log(error);
       }
@@ -65,21 +64,9 @@ function App() {
     obtainUser();
   }, []);
 
-  // // --------- USER -------
-  // useEffect(() => {
-  //   async function obtainUser() {
-  //     try {
-  //       const user = await api.getUserInfo();
+  // --------- USER -------
 
-  //       setCurrentUser(user);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   obtainUser();
-  // }, []);
-
-  // console.log(currentUser);
+  console.log(currentUser);
 
   const handleUpdateUser = async (data) => {
     const updatedUser = await api.updateUserInfo(data);
@@ -104,7 +91,7 @@ function App() {
         console.log(error);
       }
     }
-    console.log("isliked->", isLiked);
+    // console.log("isliked->", isLiked);
     obtainCardsData();
   }, [isLiked]);
 
@@ -150,7 +137,11 @@ function App() {
               <ProtectedRoute anonymous>
                 <div className="page">
                   <Header />
-                  <Authentication />
+                  <Authentication
+                    popup={popup}
+                    onOpenPopup={handleOpenPopup}
+                    onClosePopup={handleClosePopup}
+                  />
                   <Footer />
                 </div>
               </ProtectedRoute>
@@ -162,7 +153,11 @@ function App() {
               <ProtectedRoute anonymous>
                 <div className="page">
                   <Header />
-                  <Authentication />
+                  <Authentication
+                    popup={popup}
+                    onOpenPopup={handleOpenPopup}
+                    onClosePopup={handleClosePopup}
+                  />
                   <Footer />
                 </div>
               </ProtectedRoute>
