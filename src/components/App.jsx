@@ -25,7 +25,9 @@ function App() {
   // --------- contextProviders -------
   function AuthProvider({ children }) {
     return (
-      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+      <AuthContext.Provider
+        value={{ isLoggedIn, setIsLoggedIn, setCurrentUser }}
+      >
         {children}
       </AuthContext.Provider>
     );

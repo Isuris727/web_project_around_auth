@@ -16,15 +16,20 @@ function Authentication({ popup, onOpenPopup, onClosePopup }) {
     email: "",
     password: "",
   });
-  const [RegisterError, setRegisterError] = useState(false);
+  // const [RegisterError, setRegisterError] = useState(false);
 
-  console.log("Register errror en linea 17", RegisterError);
+  // console.log("Register errror en linea 17", RegisterError);
 
-  const toolTipMessage = RegisterError
-    ? "Uy, algo salio mal. Por favor, inténtalo de nuevo."
-    : "¡Correcto! ya estás registrado."; // podria modificarse usando mensajes de la respuesta de la api
-  const InfoToolTipPopup = {
-    children: <InfoTooltip message={toolTipMessage} isError={RegisterError} />,
+  // const toolTipMessage = RegisterError
+  //   ? "Uy, algo salio mal. Por favor, inténtalo de nuevo."
+  //   : "¡Correcto! ya estás registrado."; // podria modificarse usando mensajes de la respuesta de la api
+  const InfoToolTipPopup = (error) => {
+    const toolTipMessage = error
+      ? "Uy, algo salio mal. Por favor, inténtalo de nuevo."
+      : "¡Correcto! ya estás registrado.";
+    return {
+      children: <InfoTooltip message={toolTipMessage} isError={error} />,
+    };
   };
 
   function handleChange(event) {
@@ -41,17 +46,19 @@ function Authentication({ popup, onOpenPopup, onClosePopup }) {
       const newUser = await auth.register({ email, password });
       console.log("newUser", newUser);
       console.log("se ejecuto handleSignUp");
-
+      onOpenPopup(InfoToolTipPopup(false));
       // onOpenPopup(InfoToolTipPopup);
       navigate("/signin");
     } catch (error) {
       // console.log(setRegisterError(true));
-      setRegisterError(true);
+      // setRegisterError(true);
       // onOpenPopup(InfoToolTipPopup);
+      onOpenPopup(InfoToolTipPopup(true));
       console.log("Se ejecutó catch de handleSignUp");
-    } finally {
-      onOpenPopup(InfoToolTipPopup);
     }
+    // finally {
+    //   onOpenPopup(InfoToolTipPopup(true));
+    // }
   }
 
   async function handleSignIn({ email, password }) {
@@ -94,7 +101,7 @@ function Authentication({ popup, onOpenPopup, onClosePopup }) {
   // const openInfoToolTip = error || false;
 
   // console.log(popup);
-  console.log("Register errror justo antes del return", RegisterError);
+  // console.log("Register errror justo antes del return", RegisterError);
   return (
     <>
       {popup && <Popup onClose={onClosePopup}>{popup.children}</Popup>}
