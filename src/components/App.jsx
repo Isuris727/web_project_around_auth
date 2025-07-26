@@ -12,6 +12,7 @@ import Header from "./Header/Header.jsx";
 import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import api from "../utils/api.js";
+import auth from "../utils/auth.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 import { AuthContext } from "../contexts/AuthContext.js";
 
@@ -21,6 +22,7 @@ function App() {
   const [popup, setPopup] = useState(null);
   const [cards, setCards] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
+  const [token, setToken] = useState("");
 
   // --------- contextProviders -------
   function AuthProvider({ children }) {
@@ -48,8 +50,19 @@ function App() {
   }
 
   // --------- LOG IN -------
+
   useEffect(() => {
-    const token = ""; // funcion para obtener token
+    async function checkToken() {
+      if (localStorage.getItem("token")) {
+        const token = localStorage.getItem("token");
+        const validToken = await auth.isValidToken("/users/me", token);
+        setToken(validToken);
+      }
+    }
+    checkToken();
+  }, []);
+
+  useEffect(() => {
     if (!token) {
       return;
     }
@@ -63,8 +76,10 @@ function App() {
         console.log(error);
       }
     }
+    api.setToken(token);
+
     obtainUser();
-  }, []);
+  }, [token]);
 
   // --------- USER -------
 
@@ -93,7 +108,6 @@ function App() {
         console.log(error);
       }
     }
-    // console.log("isliked->", isLiked);
     obtainCardsData();
   }, [isLiked]);
 

@@ -1,6 +1,11 @@
 class Api {
   constructor(url) {
     this.url = url;
+    this.jwt = null;
+  }
+
+  setToken(token) {
+    if (token) this.jwt = token;
   }
 
   async _fetchData(endpoint, requestMethod, body) {
@@ -10,6 +15,7 @@ class Api {
         //agregar a tus solicitudes un encabezado Authorization: Bearer {token}, utilizando el token recibido por la solicitud de autenticación del usuario
 
         authorization: "94c8a629-44c5-4556-b294-d569e5d5ac14",
+        // Autorization: `Bearer ${this.jwt}`,
         "content-type": "application/json",
       },
       body: JSON.stringify(body),

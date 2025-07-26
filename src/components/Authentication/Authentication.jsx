@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext.js";
-// import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
+
 import Popup from "../Main/Popup/Popup.jsx";
 import InfoTooltip from "../Main/Popup/InfoTooltip/InfoTooltip";
 import auth from "../../utils/auth.js";
@@ -16,13 +16,7 @@ function Authentication({ popup, onOpenPopup, onClosePopup }) {
     email: "",
     password: "",
   });
-  // const [RegisterError, setRegisterError] = useState(false);
 
-  // console.log("Register errror en linea 17", RegisterError);
-
-  // const toolTipMessage = RegisterError
-  //   ? "Uy, algo salio mal. Por favor, inténtalo de nuevo."
-  //   : "¡Correcto! ya estás registrado."; // podria modificarse usando mensajes de la respuesta de la api
   const InfoToolTipPopup = (error) => {
     const toolTipMessage = error
       ? "Uy, algo salio mal. Por favor, inténtalo de nuevo."
@@ -45,29 +39,21 @@ function Authentication({ popup, onOpenPopup, onClosePopup }) {
     try {
       const newUser = await auth.register({ email, password });
       console.log("newUser", newUser);
-      console.log("se ejecuto handleSignUp");
       onOpenPopup(InfoToolTipPopup(false));
-      // onOpenPopup(InfoToolTipPopup);
+
       navigate("/signin");
     } catch (error) {
-      // console.log(setRegisterError(true));
-      // setRegisterError(true);
-      // onOpenPopup(InfoToolTipPopup);
       onOpenPopup(InfoToolTipPopup(true));
-      console.log("Se ejecutó catch de handleSignUp");
+      console.log("Se ejecutó catch de handleSignUp", error);
     }
-    // finally {
-    //   onOpenPopup(InfoToolTipPopup(true));
-    // }
   }
 
   async function handleSignIn({ email, password }) {
     try {
       const user = await auth.authorize({ email, password });
-      console.log(user);
-      localStorage.setItem("token", user.token); // ¿es correcto usar la palabra token? o seria mejor usar otra palabra
+      localStorage.setItem("token", user.token);
+      setCurrentUser(currentUser.email);
       setIsLoggedIn(true);
-      // setCurrentUser();
       navigate("/");
     } catch (error) {
       console.log("Se ejecutó catch de handleSignIn", error);
@@ -95,13 +81,8 @@ function Authentication({ popup, onOpenPopup, onClosePopup }) {
   function handleSubmit(event) {
     event.preventDefault();
     entryPoint.function(data);
-    console.log("handleSubmit", entryPoint.function);
   }
 
-  // const openInfoToolTip = error || false;
-
-  // console.log(popup);
-  // console.log("Register errror justo antes del return", RegisterError);
   return (
     <>
       {popup && <Popup onClose={onClosePopup}>{popup.children}</Popup>}

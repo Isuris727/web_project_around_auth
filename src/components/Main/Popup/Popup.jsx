@@ -1,5 +1,3 @@
-// import { useEffect } from "react";
-
 function Popup(props) {
   const { onClose, title, children } = props;
 
